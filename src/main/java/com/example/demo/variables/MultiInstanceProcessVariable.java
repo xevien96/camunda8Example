@@ -7,4 +7,5 @@ public class MultiInstanceProcessVariable {
     private Integer by2;
     private Integer by3;
     private Integer by4;
+    private Integer by5;
 }
