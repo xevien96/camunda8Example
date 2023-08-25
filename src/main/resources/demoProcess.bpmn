@@ -41,21 +41,21 @@
         <bpmn:incoming>Flow_0xoszrp</bpmn:incoming>
         <bpmn:outgoing>Flow_02ox5kv</bpmn:outgoing>
       </bpmn:serviceTask>
-      <bpmn:sequenceFlow id="Flow_02ox5kv" sourceRef="MultiplyBy3Task" targetRef="Event_0lj8yol" />
-      <bpmn:intermediateCatchEvent id="Event_0lj8yol" name="Message recieved and multyply by 5">
+      <bpmn:sequenceFlow id="Flow_02ox5kv" sourceRef="MultiplyBy3Task" targetRef="MultiplyBy6Task" />
+      <bpmn:intermediateCatchEvent id="MessageRecievedAndMultyplyBy5Event" name="Message recieved and multyply by 5">
         <bpmn:extensionElements>
           <zeebe:ioMapping>
             <zeebe:output source="=element * 5" target="result.by5" />
           </zeebe:ioMapping>
         </bpmn:extensionElements>
-        <bpmn:incoming>Flow_02ox5kv</bpmn:incoming>
+        <bpmn:incoming>Flow_1556at8</bpmn:incoming>
         <bpmn:outgoing>Flow_0c7tutp</bpmn:outgoing>
         <bpmn:messageEventDefinition id="MessageEventDefinition_14c2q12" messageRef="Message_0j657sj" />
       </bpmn:intermediateCatchEvent>
       <bpmn:endEvent id="MultiInstanceEndedWithMessageEndEvent" name="Multi instance ended with message">
         <bpmn:incoming>Flow_0c7tutp</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_0c7tutp" sourceRef="Event_0lj8yol" targetRef="MultiInstanceEndedWithMessageEndEvent" />
+      <bpmn:sequenceFlow id="Flow_0c7tutp" sourceRef="MessageRecievedAndMultyplyBy5Event" targetRef="MultiInstanceEndedWithMessageEndEvent" />
       <bpmn:subProcess id="Activity_1mxg7q9" triggeredByEvent="true">
         <bpmn:endEvent id="MultiInstanceEndedWithTimerEndEvent" name="Multi instance ended with timer">
           <bpmn:incoming>Flow_0tbd0r5</bpmn:incoming>
@@ -65,7 +65,7 @@
         <bpmn:startEvent id="TimerTriggeredStartEvent" name="Timer triggered">
           <bpmn:outgoing>Flow_0pst9is</bpmn:outgoing>
           <bpmn:timerEventDefinition id="TimerEventDefinition_0aj807e">
-            <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT3M</bpmn:timeDuration>
+            <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1M</bpmn:timeDuration>
           </bpmn:timerEventDefinition>
         </bpmn:startEvent>
         <bpmn:serviceTask id="MultiplyBy4Task" name="Multiply by 4">
@@ -84,6 +84,17 @@
         <bpmn:incoming>Flow_1qswy1m</bpmn:incoming>
         <bpmn:outgoing>Flow_03h0ui2</bpmn:outgoing>
       </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="Flow_1556at8" sourceRef="MultiplyBy6Task" targetRef="MessageRecievedAndMultyplyBy5Event" />
+      <bpmn:scriptTask id="MultiplyBy6Task" name="Multiply by 6">
+        <bpmn:extensionElements>
+          <zeebe:script expression="=element * 6" resultVariable="times6" />
+          <zeebe:ioMapping>
+            <zeebe:output source="=times6" target="result.by6" />
+          </zeebe:ioMapping>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_02ox5kv</bpmn:incoming>
+        <bpmn:outgoing>Flow_1556at8</bpmn:outgoing>
+      </bpmn:scriptTask>
     </bpmn:subProcess>
     <bpmn:sequenceFlow id="Flow_0sm5tsi" sourceRef="BeforeMultiInstanceTask" targetRef="Activity_0pz212u" />
     <bpmn:endEvent id="ProcessEndedEndEvent" name="Process ended">
@@ -109,43 +120,42 @@
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1ed7gd8_di" bpmnElement="ProcessEndedEndEvent">
-        <dc:Bounds x="1252" y="159" width="36" height="36" />
+        <dc:Bounds x="1482" y="159" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1233" y="202" width="74" height="14" />
+          <dc:Bounds x="1463" y="202" width="74" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0pz212u_di" bpmnElement="Activity_0pz212u" isExpanded="true">
-        <dc:Bounds x="440" y="77" width="730" height="523" />
+        <dc:Bounds x="440" y="77" width="960" height="523" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_06krcu4_di" bpmnElement="Event_06krcu4">
         <dc:Bounds x="480" y="159" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0bk4k1c_di" bpmnElement="MultiplyBy3Task">
-        <dc:Bounds x="830" y="137" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1ed14ma_di" bpmnElement="Event_0lj8yol">
-        <dc:Bounds x="992" y="159" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="967" y="202" width="90" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_17purgb_di" bpmnElement="MultiInstanceEndedWithMessageEndEvent">
-        <dc:Bounds x="1092" y="159" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1076" y="202" width="68" height="40" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1qw4slt_di" bpmnElement="CreateResultTask">
-        <dc:Bounds x="540" y="137" width="100" height="80" />
-        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1htoseh_di" bpmnElement="MultiplyBy2Task">
         <dc:Bounds x="690" y="137" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bk4k1c_di" bpmnElement="MultiplyBy3Task">
+        <dc:Bounds x="830" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ed14ma_di" bpmnElement="MessageRecievedAndMultyplyBy5Event">
+        <dc:Bounds x="1222" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1197" y="202" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17purgb_di" bpmnElement="MultiInstanceEndedWithMessageEndEvent">
+        <dc:Bounds x="1322" y="159" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1306" y="202" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1c0j6n4_di" bpmnElement="MultiplyBy6Task">
+        <dc:Bounds x="1000" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_06lnf3o_di" bpmnElement="Activity_1mxg7q9" isExpanded="true">
-        <dc:Bounds x="630" y="310" width="350" height="200" />
+        <dc:Bounds x="630" y="310" width="370" height="200" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1nxogzc_di" bpmnElement="MultiInstanceEndedWithTimerEndEvent">
         <dc:Bounds x="922" y="392" width="36" height="36" />
@@ -162,14 +172,18 @@
       <bpmndi:BPMNShape id="Activity_137ujhe_di" bpmnElement="MultiplyBy4Task">
         <dc:Bounds x="760" y="370" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_0tbd0r5_di" bpmnElement="Flow_0tbd0r5">
-        <di:waypoint x="860" y="410" />
-        <di:waypoint x="922" y="410" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0pst9is_di" bpmnElement="Flow_0pst9is">
         <di:waypoint x="706" y="410" />
         <di:waypoint x="760" y="410" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tbd0r5_di" bpmnElement="Flow_0tbd0r5">
+        <di:waypoint x="860" y="410" />
+        <di:waypoint x="922" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1qw4slt_di" bpmnElement="CreateResultTask">
+        <dc:Bounds x="540" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1qswy1m_di" bpmnElement="Flow_1qswy1m">
         <di:waypoint x="516" y="177" />
         <di:waypoint x="540" y="177" />
@@ -180,15 +194,19 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_02ox5kv_di" bpmnElement="Flow_02ox5kv">
         <di:waypoint x="930" y="177" />
-        <di:waypoint x="992" y="177" />
+        <di:waypoint x="1000" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0c7tutp_di" bpmnElement="Flow_0c7tutp">
-        <di:waypoint x="1028" y="177" />
-        <di:waypoint x="1092" y="177" />
+        <di:waypoint x="1258" y="177" />
+        <di:waypoint x="1322" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_03h0ui2_di" bpmnElement="Flow_03h0ui2">
         <di:waypoint x="640" y="177" />
         <di:waypoint x="690" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1556at8_di" bpmnElement="Flow_1556at8">
+        <di:waypoint x="1100" y="177" />
+        <di:waypoint x="1222" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0fl0kcw_di" bpmnElement="Flow_0fl0kcw">
         <di:waypoint x="215" y="177" />
@@ -199,8 +217,8 @@
         <di:waypoint x="440" y="177" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1ed196m_di" bpmnElement="Flow_1ed196m">
-        <di:waypoint x="1170" y="177" />
-        <di:waypoint x="1252" y="177" />
+        <di:waypoint x="1400" y="177" />
+        <di:waypoint x="1482" y="177" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
